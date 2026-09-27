@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Pembelajaran Fisika Kelas 10 - Resultan Vektor</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts Inter & Fira Code -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- MathJax for rendering physics formulas -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace']
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .grid-bg {
+            background-size: 20px 20px;
+            background-image: radial-gradient(circle, #cbd5e1 1px, transparent 1px);
+        }
+        .dark-grid-bg {
+            background-size: 20px 20px;
+            background-image: radial-gradient(circle, #334155 1px, transparent 1px);
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col selection:bg-blue-500 selection:text-white">
+
+    <!-- Header / Navbar -->
+    <header class="sticky top-0 z-50 bg-slate-900/95 backdrop-blur border-b border-slate-800 text-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-3">
+                    <div class="p-2 bg-blue-600 rounded-xl shadow-md shadow-blue-500/20">
+                        <i data-lucide="navigation-2" class="w-6 h-6 text-white transform rotate-45"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-extrabold text-lg sm:text-xl tracking-tight bg-gradient-to-r from-blue-400 to-indigo-300 bg-clip-text text-transparent">
+                            Fisika Interactive
+                        </h1>
+                        <p class="text-xs text-slate-400 font-medium">Topik: Resultan Vektor (Kelas X)</p>
+                    </div>
+                </div>
+
+                <!-- Navigation Tabs -->
+                <nav class="hidden md:flex space-x-1 lg:space-x-2 text-sm font-medium">
+                    <button onclick="switchTab('materi')" id="tab-materi" class="nav-btn px-3 py-2 rounded-lg transition-all flex items-center space-x-1.5 text-blue-400 bg-slate-800">
+                        <i data-lucide="book-open" class="w-4 h-4"></i>
+                        <span>Materi</span>
+                    </button>
+                    <button onclick="switchTab('simulasi2D')" id="tab-simulasi2D" class="nav-btn px-3 py-2 rounded-lg transition-all flex items-center space-x-1.5 text-slate-300 hover:text-white hover:bg-slate-800">
+                        <i data-lucide="sliders" class="w-4 h-4"></i>
+                        <span>Simulasi 2 Vektor</span>
+                    </button>
+                    <button onclick="switchTab('perahu')" id="tab-perahu" class="nav-btn px-3 py-2 rounded-lg transition-all flex items-center space-x-1.5 text-slate-300 hover:text-white hover:bg-slate-800">
+                        <i data-lucide="ship" class="w-4 h-4"></i>
+                        <span>Aplikasi Perahu</span>
+                    </button>
+                    <button onclick="switchTab('kalkulator')" id="tab-kalkulator" class="nav-btn px-3 py-2 rounded-lg transition-all flex items-center space-x-1.5 text-slate-300 hover:text-white hover:bg-slate-800">
+                        <i data-lucide="calculator" class="w-4 h-4"></i>
+                        <span>Kalkulator Vektor</span>
+                    </button>
+                    <button onclick="switchTab('kuis')" id="tab-kuis" class="nav-btn px-3 py-2 rounded-lg transition-all flex items-center space-x-1.5 text-slate-300 hover:text-white hover:bg-slate-800">
+                        <i data-lucide="award" class="w-4 h-4"></i>
+                        <span>Kuis Interaktif</span>
+                    </button>
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg bg-slate-800 text-slate-300 hover:text-white">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden md:hidden border-t border-slate-800 bg-slate-900 px-4 pt-2 pb-4 space-y-1">
+            <button onclick="switchTab('materi')" class="w-full text-left px-3 py-2 rounded-md text-slate-200 hover:bg-slate-800 flex items-center space-x-2">
+                <i data-lucide="book-open" class="w-4 h-4"></i><span>Materi Konsep</span>
+            </button>
+            <button onclick="switchTab('simulasi2D')" class="w-full text-left px-3 py-2 rounded-md text-slate-200 hover:bg-slate-800 flex items-center space-x-2">
+                <i data-lucide="sliders" class="w-4 h-4"></i><span>Simulasi 2 Vektor</span>
+            </button>
+            <button onclick="switchTab('perahu')" class="w-full text-left px-3 py-2 rounded-md text-slate-200 hover:bg-slate-800 flex items-center space-x-2">
+                <i data-lucide="ship" class="w-4 h-4"></i><span>Aplikasi Menyeberang Sungai</span>
+            </button>
+            <button onclick="switchTab('kalkulator')" class="w-full text-left px-3 py-2 rounded-md text-slate-200 hover:bg-slate-800 flex items-center space-x-2">
+                <i data-lucide="calculator" class="w-4 h-4"></i><span>Kalkulator Multi-Vektor</span>
+            </button>
+            <button onclick="switchTab('kuis')" class="w-full text-left px-3 py-2 rounded-md text-slate-200 hover:bg-slate-800 flex items-center space-x-2">
+                <i data-lucide="award" class="w-4 h-4"></i><span>Kuis & Evaluasi</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
+
+        <!-- TAB 1: MATERI TEORI -->
+        <section id="sec-materi" class="tab-content space-y-8">
+            <!-- Hero Banner -->
+            <div class="bg-gradient-to-r from-blue-700 via-indigo-700 to-slate-900 text-white rounded-3xl p-6 sm:p-10 shadow-xl relative overflow-hidden">
+                <div class="absolute -right-10 -bottom-10 opacity-10 text-white pointer-events-none">
+                    <i data-lucide="compass" class="w-96 h-96"></i>
+                </div>
+                <div class="max-w-2xl relative z-10 space-y-4">
+                    <span class="px-3 py-1 bg-blue-500/30 text-blue-200 border border-blue-400/30 rounded-full text-xs font-semibold uppercase tracking-wider">
+                        Fisika SMA Kelas 10
+                    </span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">
+                        Penjumlahan & Resultan Vektor
+                    </h2>
+                    <p class="text-slate-200 leading-relaxed text-sm sm:text-base">
+                        Vektor adalah besaran yang memiliki <strong>nilai (besar)</strong> dan <strong>arah</strong>. Contoh besaran vektor meliputi perpindahan, kecepatan, percepatan, dan gaya.
+                        Resultan vektor ($\vec{R}$) adalah vektor tunggal yang menggantikan hasil penggabungan dua atau lebih vektor.
+                    </p>
+                    <div class="pt-2 flex flex-wrap gap-3">
+                        <button onclick="switchTab('simulasi2D')" class="px-5 py-2.5 bg-white text-blue-900 hover:bg-blue-50 font-semibold rounded-xl text-sm shadow-md transition flex items-center space-x-2">
+                            <span>Mulai Simulasi</span>
+                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                        <a href="#rumus-utama" class="px-5 py-2.5 bg-blue-800/60 hover:bg-blue-800/80 text-white font-medium rounded-xl text-sm border border-blue-400/30 transition flex items-center space-x-2">
+                            <span>Lihat Formula</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Konsep Utama Cards -->
+            <div class="grid md:grid-grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Card 1 -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:shadow-md transition">
+                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center mb-4">
+                        <i data-lucide="arrow-up-right" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-bold text-lg text-slate-900 mb-2">1. Vektor Sejajar / Searah</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                        Jika dua vektor berada pada garis kerja yang sama dan searah ($\theta = 0^\circ$), resultannya cukup dijumlahkan secara aljabar.
+                    </p>
+                    <div class="bg-slate-50 p-3 rounded-lg border border-slate-200 text-center text-slate-800 font-mono text-sm">
+                        $$R = F_1 + F_2$$
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:shadow-md transition">
+                    <div class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center mb-4">
+                        <i data-lucide="arrow-left-right" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-bold text-lg text-slate-900 mb-2">2. Vektor Berlawanan Arah</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                        Jika dua vektor segaris namun berlawanan arah ($\theta = 180^\circ$), resultannya adalah selisih kedua besaran vektor tersebut.
+                    </p>
+                    <div class="bg-slate-50 p-3 rounded-lg border border-slate-200 text-center text-slate-800 font-mono text-sm">
+                        $$R = |F_1 - F_2|$$
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:shadow-md transition">
+                    <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center mb-4">
+                        <i data-lucide="maximize-2" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-bold text-lg text-slate-900 mb-2">3. Vektor Tegak Lurus</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                        Jika dua vektor membentuk sudut siku-siku ($\theta = 90^\circ$), nilai cosinus bernilai nol sehingga berlaku Phytagoras.
+                    </p>
+                    <div class="bg-slate-50 p-3 rounded-lg border border-slate-200 text-center text-slate-800 font-mono text-sm">
+                        $$R = \sqrt{F_1^2 + F_2^2}$$
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rumus Utama & Metode Jajaran Genjang -->
+            <div id="rumus-utama" class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+                <div class="max-w-3xl space-y-6">
+                    <div class="flex items-center space-x-3 border-b border-slate-100 pb-4">
+                        <div class="p-2 bg-blue-600 text-white rounded-lg">
+                            <i data-lucide="sigma" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900">Metode Jajar Genjang (Dua Vektor Membentuk Sudut $\alpha$)</h3>
+                    </div>
+
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Jika dua vektor $\vec{F_1}$ dan $\vec{F_2}$ pangkalnya berimpit dan membentuk sudut apit $\alpha$, maka besar resultan $R$ ditentukan dengan rumus cosinus:
+                    </p>
+
+                    <!-- Formula Box -->
+                    <div class="p-5 bg-gradient-to-br from-slate-900 to-blue-950 text-white rounded-2xl shadow-inner space-y-3">
+                        <p class="text-xs uppercase tracking-wider text-blue-400 font-semibold">Rumus Cosinus Resultan Vektor</p>
+                        <div class="text-center text-lg sm:text-xl font-mono py-2">
+                            $$R = \sqrt{F_1^2 + F_2^2 + 2 \cdot F_1 \cdot F_2 \cdot \cos\alpha}$$
+                        </div>
+                        <div class="text-xs text-slate-300 border-t border-slate-800 pt-3 grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            <div>• $F_1, F_2$: Besar vektor pertama & kedua (N)</div>
+                            <div>• $\alpha$: Sudut apit antara kedua vektor ($^\circ$)</div>
+                            <div>• $R$: Besar resultan vektor (N)</div>
+                            <div>• $\theta$: Arah resultan terhadap vektor utama</div>
+                        </div>
+                    </div>
+
+                    <!-- Aturan Sinus untuk Menentukan Arah -->
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-slate-800 text-sm">Menentukan Arah Resultan (Aturan Sinus):</h4>
+                        <div class="bg-blue-50 p-4 rounded-xl border border-blue-100 text-blue-900">
+                            $$\frac{R}{\sin\alpha} = \frac{F_1}{\sin\beta} = \frac{F_2}{\sin\theta}$$
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Metode Analitis (Komponen Vektor X dan Y) -->
+            <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+                <div class="space-y-6">
+                    <div class="flex items-center space-x-3 border-b border-slate-100 pb-4">
+                        <div class="p-2 bg-indigo-600 text-white rounded-lg">
+                            <i data-lucide="grid" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900">Metode Analitis (Uraian Vektor pada Sumbu Kartesius)</h3>
+                    </div>
+
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Metode analitis sangat efektif digunakan jika terdapat <strong>tiga vektor atau lebih</strong>. Setiap vektor diuraikan menjadi komponen sumbu-$X$ dan sumbu-$Y$.
+                    </p>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="space-y-3 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <h4 class="font-semibold text-slate-800 text-sm flex items-center space-x-2">
+                                <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                                <span>1. Komponen Pada Sumbu X & Y</span>
+                            </h4>
+                            <div class="text-sm font-mono space-y-2">
+                                <p class="bg-white p-2 rounded border border-slate-200">$$F_x = F \cdot \cos\theta$$</p>
+                                <p class="bg-white p-2 rounded border border-slate-200">$$F_y = F \cdot \sin\theta$$</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <h4 class="font-semibold text-slate-800 text-sm flex items-center space-x-2">
+                                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                                <span>2. Resultan Total & Arah ($\tan\theta$)</span>
+                            </h4>
+                            <div class="text-sm font-mono space-y-2">
+                                <p class="bg-white p-2 rounded border border-slate-200">$$R = \sqrt{(\sum F_x)^2 + (\sum F_y)^2}$$</p>
+                                <p class="bg-white p-2 rounded border border-slate-200">$$\tan\theta = \frac{\sum F_y}{\sum F_x}$$</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: SIMULASI INTERAKTIF 2 VEKTOR -->
+        <section id="sec-simulasi2D" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-200">
+                <div class="flex flex-col lg:flex-row justify-between lg:items-center mb-6 pb-4 border-b border-slate-100 gap-4">
+                    <div>
+                        <h2 class="text-xl sm:text-2xl font-bold text-slate-900 flex items-center space-x-2">
+                            <span>Simulasi Interaktif: Resultan 2 Vektor</span>
+                        </h2>
+                        <p class="text-slate-500 text-xs sm:text-sm">
+                            Ubah nilai vektor $F_1$, $F_2$, dan sudut apit ($\alpha$) untuk melihat visualisasi gambar jajaran genjang dan komponen uraian vektornya secara real-time.
+                        </p>
+                    </div>
+                    <!-- Controls View Toggles -->
+                    <div class="flex flex-wrap items-center gap-2">
+                        <label class="inline-flex items-center space-x-2 bg-slate-100 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-700 cursor-pointer hover:bg-slate-200">
+                            <input type="checkbox" id="chk-parallelogram" checked onchange="updateVectorCanvas()" class="rounded text-blue-600 focus:ring-blue-500">
+                            <span>Garis Jajar Genjang</span>
+                        </label>
+                        <label class="inline-flex items-center space-x-2 bg-slate-100 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-700 cursor-pointer hover:bg-slate-200">
+                            <input type="checkbox" id="chk-components" checked onchange="updateVectorCanvas()" class="rounded text-blue-600 focus:ring-blue-500">
+                            <span>Proyeksi $F_x, F_y$</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <!-- Canvas Visualization Box -->
+                    <div class="lg:col-span-7 bg-slate-900 rounded-2xl p-4 flex flex-col justify-between items-center relative overflow-hidden shadow-inner dark-grid-bg min-h-[380px]">
+                        <div class="w-full flex justify-between items-center text-xs text-slate-400 mb-2">
+                            <span class="flex items-center space-x-1"><i data-lucide="eye" class="w-3.5 h-3.5"></i><span>Kanvas Bidang Vektor</span></span>
+                            <span id="canvas-scale-label">Skala: 1 grid = 10 N</span>
+                        </div>
+
+                        <!-- Canvas Element -->
+                        <canvas id="vectorCanvas" class="w-full h-[320px] sm:h-[360px] cursor-crosshair rounded-xl"></canvas>
+
+                        <!-- Legend Indicator -->
+                        <div class="mt-3 w-full flex flex-wrap justify-center gap-4 text-xs font-semibold">
+                            <span class="flex items-center space-x-1.5 text-blue-400">
+                                <span class="w-3 h-3 rounded-full bg-blue-500 inline-block"></span>
+                                <span>Vektor $F_1$</span>
+                            </span>
+                            <span class="flex items-center space-x-1.5 text-emerald-400">
+                                <span class="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span>
+                                <span>Vektor $F_2$</span>
+                            </span>
+                            <span class="flex items-center space-x-1.5 text-rose-400">
+                                <span class="w-3 h-3 rounded-full bg-rose-500 inline-block"></span>
+                                <span>Resultan $R$</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Control Sliders & Live Results -->
+                    <div class="lg:col-span-5 space-y-5 flex flex-col justify-between">
+                        <!-- Controls -->
+                        <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-4">
+                            <h3 class="font-bold text-slate-800 text-sm flex items-center space-x-2">
+                                <i data-lucide="sliders" class="w-4 h-4 text-blue-600"></i>
+                                <span>Parameter Vektor</span>
+                            </h3>
+
+                            <!-- Slider F1 -->
+                            <div class="space-y-1">
+                                <div class="flex justify-between text-xs font-semibold">
+                                    <span class="text-blue-600">Besar Vektor $F_1$</span>
+                                    <span id="val-f1" class="font-mono text-slate-800">50 N</span>
+                                </div>
+                                <input type="range" id="slider-f1" min="10" max="100" value="50" step="1" 
+                                    class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                                    oninput="updateVectorCanvas()">
+                            </div>
+
+                            <!-- Slider F2 -->
+                            <div class="space-y-1">
+                                <div class="flex justify-between text-xs font-semibold">
+                                    <span class="text-emerald-600">Besar Vektor $F_2$</span>
+                                    <span id="val-f2" class="font-mono text-slate-800">40 N</span>
+                                </div>
+                                <input type="range" id="slider-f2" min="10" max="100" value="40" step="1" 
+                                    class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-emerald-600"
+                                    oninput="updateVectorCanvas()">
+                            </div>
+
+                            <!-- Slider Sudut Alpha -->
+                            <div class="space-y-1">
+                                <div class="flex justify-between text-xs font-semibold">
+                                    <span class="text-purple-600">Sudut Apit ($\alpha$)</span>
+                                    <span id="val-alpha" class="font-mono text-slate-800">60°</span>
+                                </div>
+                                <input type="range" id="slider-alpha" min="0" max="180" value="60" step="1" 
+                                    class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-purple-600"
+                                    oninput="updateVectorCanvas()">
+                            </div>
+
+                            <!-- Quick Preset Buttons -->
+                            <div class="pt-2">
+                                <span class="text-xs text-slate-500 font-medium block mb-1.5">Preset Sudut Populer:</span>
+                                <div class="flex flex-wrap gap-1.5">
+                                    <button onclick="setAnglePreset(0)" class="px-2.5 py-1 text-xs bg-white hover:bg-slate-200 text-slate-700 rounded border border-slate-300 font-medium">0° (Searah)</button>
+                                    <button onclick="setAnglePreset(45)" class="px-2.5 py-1 text-xs bg-white hover:bg-slate-200 text-slate-700 rounded border border-slate-300 font-medium">45°</button>
+                                    <button onclick="setAnglePreset(60)" class="px-2.5 py-1 text-xs bg-white hover:bg-slate-200 text-slate-700 rounded border border-slate-300 font-medium">60°</button>
+                                    <button onclick="setAnglePreset(90)" class="px-2.5 py-1 text-xs bg-white hover:bg-slate-200 text-slate-700 rounded border border-slate-300 font-medium">90° (Tegak Lurus)</button>
+                                    <button onclick="setAnglePreset(180)" class="px-2.5 py-1 text-xs bg-white hover:bg-slate-200 text-slate-700 rounded border border-slate-300 font-medium">180° (Berlawanan)</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Live Calculation Card -->
+                        <div class="bg-gradient-to-br from-slate-900 to-indigo-950 text-white p-5 rounded-xl shadow-lg space-y-3">
+                            <h4 class="text-xs uppercase font-bold text-indigo-300 tracking-wider flex items-center justify-between">
+                                <span>Hasil Perhitungan Resultan</span>
+                                <i data-lucide="cpu" class="w-4 h-4"></i>
+                            </h4>
+
+                            <div class="grid grid-cols-2 gap-3 pt-1">
+                                <div class="bg-slate-800/80 p-3 rounded-lg border border-slate-700/50">
+                                    <span class="text-xs text-slate-400 block">Besar Resultan ($R$)</span>
+                                    <span id="res-r-val" class="text-xl font-bold font-mono text-rose-400">78.10 N</span>
+                                </div>
+                                <div class="bg-slate-800/80 p-3 rounded-lg border border-slate-700/50">
+                                    <span class="text-xs text-slate-400 block">Arah ($\theta$ thd $F_1$)</span>
+                                    <span id="res-theta-val" class="text-xl font-bold font-mono text-amber-300">26.33°</span>
+                                </div>
+                            </div>
+
+                            <div class="text-xs text-slate-300 pt-2 border-t border-slate-800 font-mono space-y-1">
+                                <div class="flex justify-between"><span>$F_{1x} = \text{50.0 N}$</span><span>$F_{1y} = \text{0.0 N}$</span></div>
+                                <div class="flex justify-between" id="f2-comp-display"><span>$F_{2x} = \text{20.0 N}$</span><span>$F_{2y} = \text{34.6 N}$</span></div>
+                                <div class="flex justify-between font-bold text-blue-300 pt-1 border-t border-slate-800" id="total-comp-display">
+                                    <span>$\sum F_x = \text{70.0 N}$</span>
+                                    <span>$\sum F_y = \text{34.6 N}$</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: APLIKASI DUNIA NYATA (PERAHU MENYEBERANG SUNGAI) -->
+        <section id="sec-perahu" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-200 space-y-6">
+                <div>
+                    <h2 class="text-xl sm:text-2xl font-bold text-slate-900 flex items-center space-x-2">
+                        <i data-lucide="waves" class="w-6 h-6 text-blue-600"></i>
+                        <span>Simulasi Aplikasi: Perahu Menyeberang Sungai</span>
+                    </h2>
+                    <p class="text-slate-500 text-xs sm:text-sm mt-1">
+                        Kasus nyata resultan vektor kecepatan! Ketika perahu diarahkan menyeberangi sungai yang mengalir, gerak sebenarnya perahu merupakan <strong>resultan dari kecepatan perahu ($v_p$) dan kecepatan arus air ($v_a$)</strong>.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <!-- River Simulation Canvas Box -->
+                    <div class="lg:col-span-8 bg-sky-950 rounded-2xl p-4 flex flex-col justify-between items-center relative overflow-hidden shadow-inner min-h-[380px]">
+                        <div class="w-full flex justify-between items-center text-xs text-sky-200 z-10">
+                            <span class="bg-sky-900/80 px-2.5 py-1 rounded-md border border-sky-700/50">Lebar Sungai: $d = 100\text{ m}$</span>
+                            <span id="boat-status-badge" class="bg-emerald-900/80 text-emerald-300 px-2.5 py-1 rounded-md border border-emerald-700/50 font-medium">Siap Berlayar</span>
+                        </div>
+
+                        <!-- Canvas Boat Simulation -->
+                        <canvas id="boatCanvas" class="w-full h-[320px] rounded-xl my-2"></canvas>
+
+                        <!-- Boat Legend -->
+                        <div class="w-full flex flex-wrap justify-center gap-4 text-xs font-semibold text-white z-10">
+                            <span class="flex items-center space-x-1.5 text-blue-400">
+                                <span class="w-3 h-3 rounded-full bg-blue-500 inline-block"></span>
+                                <span>Kecepatan Perahu ($v_p$)</span>
+                            </span>
+                            <span class="flex items-center space-x-1.5 text-cyan-300">
+                                <span class="w-3 h-3 rounded-full bg-cyan-400 inline-block"></span>
+                                <span>Kecepatan Arus ($v_a$)</span>
+                            </span>
+                            <span class="flex items-center space-x-1.5 text-amber-400">
+                                <span class="w-3 h-3 rounded-full bg-amber-400 inline-block"></span>
+                                <span>Resultan Kecepatan ($v_r$)</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Boat Controls & Physics Data -->
+                    <div class="lg:col-span-4 space-y-4 flex flex-col justify-between">
+                        <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-4">
+                            <h3 class="font-bold text-slate-800 text-sm flex items-center space-x-2">
+                                <i data-lucide="settings" class="w-4 h-4 text-blue-600"></i>
+                                <span>Pengaturan Kecepatan & Kemudi</span>
+                            </h3>
+
+                            <!-- Slider Kecepatan Perahu -->
+                            <div class="space-y-1">
+                                <div class="flex justify-between text-xs font-semibold">
+                                    <span class="text-blue-700">Kecepatan Perahu ($v_p$)</span>
+                                    <span id="val-vp" class="font-mono text-slate-800">8 m/s</span>
+                                </div>
+                                <input type="range" id="slider-vp" min="2" max="20" value="8" step="1" 
+                                    class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                                    oninput="updateBoatPhysics()">
+                            </div>
+
+                            <!-- Slider Kecepatan Arus Sungai -->
+                            <div class="space-y-1">
+                                <div class="flex justify-between text-xs font-semibold">
+                                    <span class="text-cyan-700">Kecepatan Arus ($v_a$)</span>
+                                    <span id="val-va" class="font-mono text-slate-800">6 m/s</span>
+                                </div>
+                                <input type="range" id="slider-va" min="0" max="15" value="6" step="1" 
+                                    class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-cyan-600"
+                                    oninput="updateBoatPhysics()">
+                            </div>
+
+                            <!-- Slider Arah Kemudi -->
+                            <div class="space-y-1">
+                                <div class="flex justify-between text-xs font-semibold">
+                                    <span class="text-indigo-700">Sudut Kemudi Perahu ($\theta$)</span>
+                                    <span id="val-boat-angle" class="font-mono text-slate-800">90° (Tegak Lurus)</span>
+                                </div>
+                                <input type="range" id="slider-boat-angle" min="30" max="150" value="90" step="1" 
+                                    class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+                                    oninput="updateBoatPhysics()">
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="pt-2 flex space-x-2">
+                                <button id="btn-start-boat" onclick="toggleBoatAnimation()" class="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl text-sm shadow transition flex items-center justify-center space-x-2">
+                                    <i data-lucide="play" class="w-4 h-4"></i>
+                                    <span>Mulai Layar</span>
+                                </button>
+                                <button onclick="resetBoatAnimation()" class="px-3 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-xl text-sm transition">
+                                    <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Results Card -->
+                        <div class="bg-gradient-to-br from-slate-900 to-sky-950 text-white p-5 rounded-xl shadow-lg space-y-3">
+                            <h4 class="text-xs uppercase font-bold text-sky-300 tracking-wider">
+                                Analisis Fisika Perahu
+                            </h4>
+
+                            <div class="grid grid-cols-2 gap-2 text-xs font-mono">
+                                <div class="bg-slate-800/80 p-2.5 rounded border border-slate-700">
+                                    <span class="text-slate-400 block text-[10px]">Resultan Kecepatan ($v_r$)</span>
+                                    <span id="res-vr" class="text-base font-bold text-amber-300">10.00 m/s</span>
+                                </div>
+                                <div class="bg-slate-800/80 p-2.5 rounded border border-slate-700">
+                                    <span class="text-slate-400 block text-[10px]">Waktu Tempuh ($t$)</span>
+                                    <span id="res-time" class="text-base font-bold text-emerald-300">12.50 s</span>
+                                </div>
+                            </div>
+
+                            <div class="bg-slate-800/80 p-2.5 rounded border border-slate-700 text-xs font-mono">
+                                <span class="text-slate-400 block text-[10px]">Jarak Hanyut Sejajar Sungai ($s_x$)</span>
+                                <span id="res-drift" class="text-base font-bold text-cyan-300">75.00 meter</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: KALKULTOR MULTI-VEKTOR -->
+        <section id="sec-kalkulator" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-200">
+                <div class="max-w-4xl mx-auto space-y-6">
+                    <div>
+                        <h2 class="text-xl sm:text-2xl font-bold text-slate-900 flex items-center space-x-2">
+                            <i data-lucide="calculator" class="w-6 h-6 text-indigo-600"></i>
+                            <span>Kalkulator Resultan Banyak Vektor (Metode Analitis)</span>
+                        </h2>
+                        <p class="text-slate-500 text-xs sm:text-sm mt-1">
+                            Tambahkan hingga 5 gaya/vektor untuk menghitung resultan akhir $\sum F_x$, $\sum F_y$, besar total $R$, serta arah sudutnya ($\theta$).
+                        </p>
+                    </div>
+
+                    <!-- Vector Input List Table -->
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm border-collapse">
+                            <thead>
+                                <tr class="bg-slate-100 text-slate-700 font-semibold border-b border-slate-200">
+                                    <th class="p-3">Nama Vektor</th>
+                                    <th class="p-3">Besar Gaya $F$ (N)</th>
+                                    <th class="p-3">Sudut $\theta$ ($^\circ$ thd Sumbu X Positive)</th>
+                                    <th class="p-3">Komponen $F_x = F \cos\theta$</th>
+                                    <th class="p-3">Komponen $F_y = F \sin\theta$</th>
+                                    <th class="p-3 text-center">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="vector-table-body" class="divide-y divide-slate-100 font-mono">
+                                <!-- Dynamic rows inserted by JS -->
+                            </tbody>
+                            <tfoot>
+                                <tr class="bg-slate-900 text-white font-bold">
+                                    <td colspan="3" class="p-3 text-right">TOTAL ($\sum$):</td>
+                                    <td id="calc-sum-fx" class="p-3 text-emerald-400">0.00 N</td>
+                                    <td id="calc-sum-fy" class="p-3 text-emerald-400">0.00 N</td>
+                                    <td></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                    <!-- Controls for Table -->
+                    <div class="flex flex-wrap justify-between items-center gap-3">
+                        <button onclick="addVectorRow()" class="px-4 py-2 bg-indigo-50 text-indigo-600 hover:bg-indigo-100 font-semibold rounded-xl text-sm border border-indigo-200 transition flex items-center space-x-1.5">
+                            <i data-lucide="plus-circle" class="w-4 h-4"></i>
+                            <span>Tambah Vektor Barus</span>
+                        </button>
+                        <button onclick="calculateMultiVector()" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl text-sm shadow transition flex items-center space-x-2">
+                            <i data-lucide="cpu" class="w-4 h-4"></i>
+                            <span>Hitung Resultan Total</span>
+                        </button>
+                    </div>
+
+                    <!-- Final Result Display Box -->
+                    <div id="multi-calc-result" class="hidden bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white p-6 rounded-2xl shadow-xl space-y-4">
+                        <h3 class="text-base font-bold text-indigo-300 uppercase tracking-wider flex items-center space-x-2">
+                            <i data-lucide="check-circle-2" class="w-5 h-5 text-emerald-400"></i>
+                            <span>Hasil Akhir Analitis</span>
+                        </h3>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 font-mono">
+                            <div class="bg-slate-800/80 p-4 rounded-xl border border-slate-700">
+                                <span class="text-xs text-slate-400 block">Total Sumbu X ($\sum F_x$)</span>
+                                <span id="res-sum-x" class="text-xl font-bold text-cyan-300">0.00 N</span>
+                            </div>
+                            <div class="bg-slate-800/80 p-4 rounded-xl border border-slate-700">
+                                <span class="text-xs text-slate-400 block">Total Sumbu Y ($\sum F_y$)</span>
+                                <span id="res-sum-y" class="text-xl font-bold text-cyan-300">0.00 N</span>
+                            </div>
+                            <div class="bg-slate-800/80 p-4 rounded-xl border border-indigo-500/50 bg-indigo-950/40">
+                                <span class="text-xs text-indigo-300 block">Besar Resultan ($R$)</span>
+                                <span id="res-total-r" class="text-2xl font-black text-amber-300">0.00 N</span>
+                            </div>
+                        </div>
+
+                        <div class="p-3 bg-slate-800/60 rounded-xl border border-slate-700 text-sm font-mono flex flex-col sm:flex-row justify-between items-center gap-2">
+                            <span>Arah Sudut Resultan ($\theta$): <strong id="res-total-angle" class="text-emerald-400">0.00°</strong></span>
+                            <span id="res-kuadran-info" class="text-xs bg-slate-700 px-2.5 py-1 rounded text-slate-300">Kuadran I</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 5: KUIS & EVALUASI -->
+        <section id="sec-kuis" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-200">
+                <div class="max-w-3xl mx-auto space-y-6">
+                    <div class="flex justify-between items-center border-b border-slate-100 pb-4">
+                        <div>
+                            <h2 class="text-xl sm:text-2xl font-bold text-slate-900 flex items-center space-x-2">
+                                <i data-lucide="award" class="w-6 h-6 text-amber-500"></i>
+                                <span>Kuis & Evaluasi Pemahaman Vektor</span>
+                            </h2>
+                            <p class="text-slate-500 text-xs sm:text-sm mt-1">Uji pemahamanmu dengan menjawab soal-soal pilihan ganda berikut.</p>
+                        </div>
+                        <div id="quiz-score-badge" class="hidden px-4 py-2 bg-amber-100 text-amber-800 font-bold rounded-xl text-sm border border-amber-300">
+                            Skor: <span id="quiz-score-num">0</span> / 100
+                        </div>
+                    </div>
+
+                    <!-- Quiz Form List -->
+                    <div id="quiz-container" class="space-y-6">
+                        <!-- Questions dynamically rendered -->
+                    </div>
+
+                    <!-- Quiz Submit & Reset -->
+                    <div class="pt-4 flex justify-end space-x-3">
+                        <button onclick="resetQuiz()" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl text-sm transition">
+                            Ulangi Kuis
+                        </button>
+                        <button onclick="submitQuiz()" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl text-sm shadow transition">
+                            Periksa Jawaban
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 border-t border-slate-800 text-slate-400 py-6 text-center text-xs">
+        <div class="max-w-7xl mx-auto px-4 space-y-1">
+            <p class="font-medium text-slate-300">Media Pembelajaran Interaktif Fisika SMA Kelas 10 - Materi Resultan Vektor</p>
+            <p>Didesain dengan Tailwind CSS, HTML5 Canvas & MathJax</p>
+        </div>
+    </footer>
+
+    <!-- Toast Notification Box -->
+    <div id="toast-msg" class="fixed bottom-5 right-5 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-2xl border border-slate-700 text-sm hidden flex items-center space-x-2 z-50">
+        <i data-lucide="info" class="w-4 h-4 text-blue-400"></i>
+        <span id="toast-text">Notifikasi</span>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Tab Navigation Function
+        function switchTab(tabId) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            
+            // Remove active classes on nav buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-blue-400', 'bg-slate-800');
+                btn.classList.add('text-slate-300');
+            });
+
+            // Show target section
+            const target = document.getElementById('sec-' + tabId);
+            if(target) target.classList.remove('hidden');
+
+            // Highlight active tab
+            const activeBtn = document.getElementById('tab-' + tabId);
+            if(activeBtn) {
+                activeBtn.classList.add('text-blue-400', 'bg-slate-800');
+                activeBtn.classList.remove('text-slate-300');
+            }
+
+            // Trigger canvas redraws if switching to simulation tabs
+            if (tabId === 'simulasi2D') {
+                setTimeout(updateVectorCanvas, 50);
+            } else if (tabId === 'perahu') {
+                setTimeout(initBoatCanvas, 50);
+            }
+
+            // Close mobile menu
+            document.getElementById('mobile-menu').classList.add('hidden');
+        }
+
+        // Mobile Menu Toggle
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        // Toast message utility
+        function showToast(msg) {
+            const toast = document.getElementById('toast-msg');
+            document.getElementById('toast-text').innerText = msg;
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 3000);
+        }
+
+        // ==========================================
+        // SIMULASI 2 VEKTOR CANVAS ENGINE
+        // ==========================================
+        const vectorCanvas = document.getElementById('vectorCanvas');
+        const ctx2d = vectorCanvas.getContext('2d');
+
+        function setAnglePreset(deg) {
+            document.getElementById('slider-alpha').value = deg;
+            updateVectorCanvas();
+        }
+
+        function updateVectorCanvas() {
+            if (!vectorCanvas) return;
+
+            // Responsive Canvas Dimensions
+            const rect = vectorCanvas.parentElement.getBoundingClientRect();
+            vectorCanvas.width = rect.width - 32; // padding
+            vectorCanvas.height = 340;
+
+            const width = vectorCanvas.width;
+            const height = vectorCanvas.height;
+
+            // Get Parameter Values
+            const f1 = parseFloat(document.getElementById('slider-f1').value);
+            const f2 = parseFloat(document.getElementById('slider-f2').value);
+            const alphaDeg = parseFloat(document.getElementById('slider-alpha').value);
+            const alphaRad = alphaDeg * (Math.PI / 180);
+
+            // Update Labels
+            document.getElementById('val-f1').innerText = f1.toFixed(0) + ' N';
+            document.getElementById('val-f2').innerText = f2.toFixed(0) + ' N';
+            document.getElementById('val-alpha').innerText = alphaDeg.toFixed(0) + '°';
+
+            // Show Parallelogram and Projections checkboxes
+            const showParallelogram = document.getElementById('chk-parallelogram').checked;
+            const showComponents = document.getElementById('chk-components').checked;
+
+            // Vector Component Calculations
+            const f1x = f1;
+            const f1y = 0;
+
+            const f2x = f2 * Math.cos(alphaRad);
+            const f2y = f2 * Math.sin(alphaRad);
+
+            const rx = f1x + f2x;
+            const ry = f1y + f2y;
+
+            const rMag = Math.sqrt(rx * rx + ry * ry);
+            let thetaRad = Math.atan2(ry, rx);
+            if (thetaRad < 0) thetaRad += 2 * Math.PI;
+            const thetaDeg = thetaRad * (180 / Math.PI);
+
+            // Update DOM Calculations
+            document.getElementById('res-r-val').innerText = rMag.toFixed(2) + ' N';
+            document.getElementById('res-theta-val').innerText = thetaDeg.toFixed(2) + '°';
+            document.getElementById('f2-comp-display').innerHTML = `<span>$F_{2x} = \\text{${f2x.toFixed(1)} N}$</span><span>$F_{2y} = \\text{${f2y.toFixed(1)} N}$</span>`;
+            document.getElementById('total-comp-display').innerHTML = `<span>$\\sum F_x = \\text{${rx.toFixed(1)} N}$</span><span>$\\sum F_y = \\text{${ry.toFixed(1)} N}$</span>`;
+
+            if (window.MathJax) {
+                MathJax.typesetPromise([document.getElementById('f2-comp-display'), document.getElementById('total-comp-display')]);
+            }
+
+            // DRAWING ON CANVAS
+            ctx2d.clearRect(0, 0, width, height);
+
+            // Origin Point
+            const scale = Math.min(width, height) / 260; // Scaling factor
+            const originX = width * 0.2;
+            const originY = height * 0.75;
+
+            // Draw Coordinate Axes
+            ctx2d.strokeStyle = '#334155';
+            ctx2d.lineWidth = 1;
+            ctx2d.setLineDash([4, 4]);
+
+            // Axis X
+            ctx2d.beginPath();
+            ctx2d.moveTo(20, originY);
+            ctx2d.lineTo(width - 20, originY);
+            ctx2d.stroke();
+
+            // Axis Y
+            ctx2d.beginPath();
+            ctx2d.moveTo(originX, 20);
+            ctx2d.lineTo(originX, height - 20);
+            ctx2d.stroke();
+
+            ctx2d.setLineDash([]); // Reset line dash
+
+            // Scaled Vector Coordinates
+            const pF1 = { x: originX + f1x * scale, y: originY - f1y * scale };
+            const pF2 = { x: originX + f2x * scale, y: originY - f2y * scale };
+            const pR  = { x: originX + rx * scale,  y: originY - ry * scale };
+
+            // Draw Parallelogram lines if enabled
+            if (showParallelogram && alphaDeg > 0 && alphaDeg < 180) {
+                ctx2d.strokeStyle = '#64748b';
+                ctx2d.lineWidth = 1.5;
+                ctx2d.setLineDash([5, 5]);
+
+                // Line from F1 tip to R
+                ctx2d.beginPath();
+                ctx2d.moveTo(pF1.x, pF1.y);
+                ctx2d.lineTo(pR.x, pR.y);
+                ctx2d.stroke();
+
+                // Line from F2 tip to R
+                ctx2d.beginPath();
+                ctx2d.moveTo(pF2.x, pF2.y);
+                ctx2d.lineTo(pR.x, pR.y);
+                ctx2d.stroke();
+
+                ctx2d.setLineDash([]);
+            }
+
+            // Draw Projections if enabled
+            if (showComponents) {
+                ctx2d.strokeStyle = '#e2e8f0';
+                ctx2d.lineWidth = 1;
+                ctx2d.setLineDash([2, 2]);
+
+                // Drop line from R to X-axis
+                ctx2d.beginPath();
+                ctx2d.moveTo(pR.x, pR.y);
+                ctx2d.lineTo(pR.x, originY);
+                ctx2d.stroke();
+
+                // Drop line from R to Y-axis
+                ctx2d.beginPath();
+                ctx2d.moveTo(pR.x, pR.y);
+                ctx2d.lineTo(originX, pR.y);
+                ctx2d.stroke();
+
+                ctx2d.setLineDash([]);
+            }
+
+            // Helper function to draw vector arrow
+            function drawArrow(fromX, fromY, toX, toY, color, label, lineWidth = 3) {
+                const headlen = 10;
+                const angle = Math.atan2(toY - fromY, toX - fromX);
+
+                ctx2d.strokeStyle = color;
+                ctx2d.fillStyle = color;
+                ctx2d.lineWidth = lineWidth;
+
+                // Main Line
+                ctx2d.beginPath();
+                ctx2d.moveTo(fromX, fromY);
+                ctx2d.lineTo(toX, toY);
+                ctx2d.stroke();
+
+                // Arrowhead
+                ctx2d.beginPath();
+                ctx2d.moveTo(toX, toY);
+                ctx2d.lineTo(toX - headlen * Math.cos(angle - Math.PI / 6), toY - headlen * Math.sin(angle - Math.PI / 6));
+                ctx2d.lineTo(toX - headlen * Math.cos(angle + Math.PI / 6), toY - headlen * Math.sin(angle + Math.PI / 6));
+                ctx2d.closePath();
+                ctx2d.fill();
+
+                // Label Text
+                if (label) {
+                    ctx2d.font = 'bold 12px Inter, sans-serif';
+                    ctx2d.fillText(label, toX + 8, toY - 8);
+                }
+            }
+
+            // Angle Arc
+            if (alphaDeg > 0) {
+                ctx2d.strokeStyle = '#a855f7';
+                ctx2d.lineWidth = 1.5;
+                ctx2d.beginPath();
+                ctx2d.arc(originX, originY, 35, 0, -alphaRad, true);
+                ctx2d.stroke();
+                ctx2d.fillStyle = '#c084fc';
+                ctx2d.font = '11px sans-serif';
+                ctx2d.fillText('α=' + alphaDeg + '°', originX + 40, originY - 10);
+            }
+
+            // Draw Vectors
+            drawArrow(originX, originY, pF1.x, pF1.y, '#3b82f6', `F1 (${f1}N)`, 3.5);
+            drawArrow(originX, originY, pF2.x, pF2.y, '#10b981', `F2 (${f2}N)`, 3.5);
+            drawArrow(originX, originY, pR.x, pR.y, '#f43f5e', `R (${rMag.toFixed(1)}N)`, 4.5);
+        }
+
+        // ==========================================
+        // RIVER BOAT CROSSING SIMULATION ENGINE
+        // ==========================================
+        const boatCanvas = document.getElementById('boatCanvas');
+        const boatCtx = boatCanvas.getContext('2d');
+
+        let boatAnimId = null;
+        let isBoatRunning = false;
+        let boatPos = { x: 0, y: 0 }; // Normalised position [0, 1]
+        let boatPath = [];
+
+        function updateBoatPhysics() {
+            const vp = parseFloat(document.getElementById('slider-vp').value);
+            const va = parseFloat(document.getElementById('slider-va').value);
+            const angleDeg = parseFloat(document.getElementById('slider-boat-angle').value);
+            const angleRad = angleDeg * (Math.PI / 180);
+
+            document.getElementById('val-vp').innerText = vp + ' m/s';
+            document.getElementById('val-va').innerText = va + ' m/s';
+            document.getElementById('val-boat-angle').innerText = angleDeg + '°';
+
+            // Physics computations (River width = 100m)
+            const d = 100; // meters
+            const vpx = vp * Math.cos(angleRad); // Boat velocity X
+            const vpy = vp * Math.sin(angleRad); // Boat velocity Y (across river)
+
+            const vrx = va + vpx; // Resultant velocity X
+            const vry = vpy;      // Resultant velocity Y
+
+            const vr = Math.sqrt(vrx * vrx + vry * vry);
+
+            // Time to cross t = d / vpy
+            let t = vpy > 0 ? d / vpy : Infinity;
+            let sx = vrx * t;
+
+            document.getElementById('res-vr').innerText = vr.toFixed(2) + ' m/s';
+            document.getElementById('res-time').innerText = isFinite(t) ? t.toFixed(2) + ' s' : '∞';
+            document.getElementById('res-drift').innerText = isFinite(sx) ? sx.toFixed(2) + ' meter' : 'N/A';
+
+            if (!isBoatRunning) {
+                renderBoatScene(0, 0, vrx, vry, angleRad, vp, va);
+            }
+        }
+
+        function initBoatCanvas() {
+            const rect = boatCanvas.parentElement.getBoundingClientRect();
+            boatCanvas.width = rect.width - 32;
+            boatCanvas.height = 320;
+            resetBoatAnimation();
+        }
+
+        function resetBoatAnimation() {
+            if (boatAnimId) cancelAnimationFrame(boatAnimId);
+            isBoatRunning = false;
+            boatPos = { x: 0, y: 0 };
+            boatPath = [];
+            document.getElementById('btn-start-boat').innerHTML = '<i data-lucide="play" class="w-4 h-4"></i><span>Mulai Layar</span>';
+            document.getElementById('boat-status-badge').innerText = 'Siap Berlayar';
+            document.getElementById('boat-status-badge').className = 'bg-emerald-900/80 text-emerald-300 px-2.5 py-1 rounded-md border border-emerald-700/50 font-medium';
+            lucide.createIcons();
+            updateBoatPhysics();
+        }
+
+        function toggleBoatAnimation() {
+            if (isBoatRunning) {
+                isBoatRunning = false;
+                if (boatAnimId) cancelAnimationFrame(boatAnimId);
+                document.getElementById('btn-start-boat').innerHTML = '<i data-lucide="play" class="w-4 h-4"></i><span>Lanjutkan</span>';
+                document.getElementById('boat-status-badge').innerText = 'Dihentikan';
+            } else {
+                isBoatRunning = true;
+                document.getElementById('btn-start-boat').innerHTML = '<i data-lucide="pause" class="w-4 h-4"></i><span>Jeda</span>';
+                document.getElementById('boat-status-badge').innerText = 'Sedang Berlayar...';
+                document.getElementById('boat-status-badge').className = 'bg-amber-900/80 text-amber-300 px-2.5 py-1 rounded-md border border-amber-700/50 font-medium';
+                animateBoat();
+            }
+            lucide.createIcons();
+        }
+
+        function animateBoat() {
+            if (!isBoatRunning) return;
+
+            const vp = parseFloat(document.getElementById('slider-vp').value);
+            const va = parseFloat(document.getElementById('slider-va').value);
+            const angleDeg = parseFloat(document.getElementById('slider-boat-angle').value);
+            const angleRad = angleDeg * (Math.PI / 180);
+
+            const vpx = vp * Math.cos(angleRad);
+            const vpy = vp * Math.sin(angleRad);
+            const vrx = va + vpx;
+            const vry = vpy;
+
+            // Increment movement
+            const dt = 0.008; // Step speed
+            boatPos.y += (vry / 100) * dt;
+            boatPos.x += (vrx / 100) * dt;
+
+            // Save trajectory
+            boatPath.push({ ...boatPos });
+
+            // Check if reached opposite shore
+            if (boatPos.y >= 1.0) {
+                boatPos.y = 1.0;
+                isBoatRunning = false;
+                document.getElementById('boat-status-badge').innerText = 'Sampai Tepi Seberang!';
+                document.getElementById('boat-status-badge').className = 'bg-blue-900/80 text-blue-300 px-2.5 py-1 rounded-md border border-blue-700/50 font-medium';
+                document.getElementById('btn-start-boat').innerHTML = '<i data-lucide="rotate-ccw" class="w-4 h-4"></i><span>Ulangi</span>';
+                lucide.createIcons();
+            }
+
+            renderBoatScene(boatPos.x, boatPos.y, vrx, vry, angleRad, vp, va);
+
+            if (isBoatRunning) {
+                boatAnimId = requestAnimationFrame(animateBoat);
+            }
+        }
+
+        function renderBoatScene(normX, normY, vrx, vry, angleRad, vp, va) {
+            const w = boatCanvas.width;
+            const h = boatCanvas.height;
+
+            boatCtx.clearRect(0, 0, w, h);
+
+            // River banks & Water Styling
+            const topBankY = 50;
+            const bottomBankY = h - 50;
+            const riverHeight = bottomBankY - topBankY;
+
+            // River Water
+            const riverGradient = boatCtx.createLinearGradient(0, topBankY, 0, bottomBankY);
+            riverGradient.addColorStop(0, '#0284c7');
+            riverGradient.addColorStop(0.5, '#0369a1');
+            riverGradient.addColorStop(1, '#0284c7');
+            boatCtx.fillStyle = riverGradient;
+            boatCtx.fillRect(0, topBankY, w, riverHeight);
+
+            // River Banks (Land)
+            boatCtx.fillStyle = '#059669'; // Green land
+            boatCtx.fillRect(0, 0, w, topBankY);
+            boatCtx.fillRect(0, bottomBankY, w, h - bottomBankY);
+
+            // River Flow Arrows
+            boatCtx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
+            boatCtx.lineWidth = 1.5;
+            for (let y = topBankY + 25; y < bottomBankY; y += 35) {
+                for (let x = 20; x < w; x += 120) {
+                    boatCtx.beginPath();
+                    boatCtx.moveTo(x, y);
+                    boatCtx.lineTo(x + 30, y);
+                    boatCtx.stroke();
+                }
+            }
+
+            // Start Position (Bottom shore)
+            const startX = w * 0.3;
+            const startY = bottomBankY;
+
+            // Current Boat Real Pixel Coordinates
+            const curX = startX + normX * riverHeight;
+            const curY = startY - normY * riverHeight;
+
+            // Draw Trajectory Path Line
+            if (boatPath.length > 0) {
+                boatCtx.strokeStyle = '#f59e0b';
+                boatCtx.lineWidth = 2.5;
+                boatCtx.setLineDash([4, 4]);
+                boatCtx.beginPath();
+                boatCtx.moveTo(startX, startY);
+                boatPath.forEach(pt => {
+                    boatCtx.lineTo(startX + pt.x * riverHeight, startY - pt.y * riverHeight);
+                });
+                boatCtx.stroke();
+                boatCtx.setLineDash([]);
+            }
+
+            // Draw Velocity Vectors from Boat
+            // 1. Boat speed vector (Vp - Blue)
+            const vpLen = vp * 4;
+            const vpEndX = curX + vpLen * Math.cos(angleRad);
+            const vpEndY = curY - vpLen * Math.sin(angleRad);
+            drawSimpleArrow(boatCtx, curX, curY, vpEndX, vpEndY, '#38bdf8', 2.5);
+
+            // 2. River speed vector (Va - Cyan)
+            const vaLen = va * 4;
+            drawSimpleArrow(boatCtx, curX, curY, curX + vaLen, curY, '#22d3ee', 2.5);
+
+            // 3. Resultant speed vector (Vr - Amber)
+            const vrLen = Math.sqrt(vrx * vrx + vry * vry) * 4;
+            const vrAngle = Math.atan2(vry, vrx);
+            drawSimpleArrow(boatCtx, curX, curY, curX + vrLen * Math.cos(vrAngle), curY - vrLen * Math.sin(vrAngle), '#fbbf24', 3.5);
+
+            // Draw Boat Body Icon
+            boatCtx.save();
+            boatCtx.translate(curX, curY);
+            boatCtx.rotate(-angleRad + Math.PI / 2); // Align boat body orientation
+
+            // Boat Hull
+            boatCtx.fillStyle = '#e11d48';
+            boatCtx.beginPath();
+            boatCtx.moveTo(0, -12);
+            boatCtx.lineTo(8, 10);
+            boatCtx.lineTo(-8, 10);
+            boatCtx.closePath();
+            boatCtx.fill();
+            boatCtx.restore();
+        }
+
+        function drawSimpleArrow(ctx, fromX, fromY, toX, toY, color, width) {
+            const headlen = 8;
+            const angle = Math.atan2(toY - fromY, toX - fromX);
+
+            ctx.strokeStyle = color;
+            ctx.fillStyle = color;
+            ctx.lineWidth = width;
+
+            ctx.beginPath();
+            ctx.moveTo(fromX, fromY);
+            ctx.lineTo(toX, toY);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(toX, toY);
+            ctx.lineTo(toX - headlen * Math.cos(angle - Math.PI / 6), toY - headlen * Math.sin(angle - Math.PI / 6));
+            ctx.lineTo(toX - headlen * Math.cos(angle + Math.PI / 6), toY - headlen * Math.sin(angle + Math.PI / 6));
+            ctx.closePath();
+            ctx.fill();
+        }
+
+        // ==========================================
+        // MULTI-VECTOR ANALYTICAL CALCULATOR LOGIC
+        // ==========================================
+        let multiVectors = [
+            { id: 1, name: 'F1', mag: 50, angle: 0 },
+            { id: 2, name: 'F2', mag: 30, angle: 60 }
+        ];
+
+        function renderVectorTable() {
+            const tbody = document.getElementById('vector-table-body');
+            tbody.innerHTML = '';
+
+            multiVectors.forEach((v, idx) => {
+                const rad = v.angle * (Math.PI / 180);
+                const fx = v.mag * Math.cos(rad);
+                const fy = v.mag * Math.sin(rad);
+
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-slate-50 transition';
+                tr.innerHTML = `
+                    <td class="p-3 font-semibold text-slate-800">${v.name}</td>
+                    <td class="p-3">
+                        <input type="number" value="${v.mag}" onchange="updateVectorRow(${idx}, 'mag', this.value)" 
+                            class="w-24 p-1.5 border border-slate-300 rounded focus:ring-2 focus:ring-indigo-500 font-mono text-sm">
+                    </td>
+                    <td class="p-3">
+                        <input type="number" value="${v.angle}" onchange="updateVectorRow(${idx}, 'angle', this.value)" 
+                            class="w-24 p-1.5 border border-slate-300 rounded focus:ring-2 focus:ring-indigo-500 font-mono text-sm">
+                    </td>
+                    <td class="p-3 font-mono text-slate-600">${fx.toFixed(2)} N</td>
+                    <td class="p-3 font-mono text-slate-600">${fy.toFixed(2)} N</td>
+                    <td class="p-3 text-center">
+                        ${multiVectors.length > 1 ? `
+                            <button onclick="removeVectorRow(${idx})" class="p-1 text-rose-500 hover:text-rose-700 hover:bg-rose-50 rounded">
+                                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                            </button>
+                        ` : ''}
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            lucide.createIcons();
+            calculateMultiVector();
+        }
+
+        function updateVectorRow(idx, prop, val) {
+            multiVectors[idx][prop] = parseFloat(val) || 0;
+            renderVectorTable();
+        }
+
+        function addVectorRow() {
+            if (multiVectors.length >= 5) {
+                showToast('Maksimum 5 vektor.');
+                return;
+            }
+            const nextNum = multiVectors.length + 1;
+            multiVectors.push({ id: Date.now(), name: `F${nextNum}`, mag: 20, angle: 90 });
+            renderVectorTable();
+        }
+
+        function removeVectorRow(idx) {
+            multiVectors.splice(idx, 1);
+            renderVectorTable();
+        }
+
+        function calculateMultiVector() {
+            let sumX = 0;
+            let sumY = 0;
+
+            multiVectors.forEach(v => {
+                const rad = v.angle * (Math.PI / 180);
+                sumX += v.mag * Math.cos(rad);
+                sumY += v.mag * Math.sin(rad);
+            });
+
+            const rTotal = Math.sqrt(sumX * sumX + sumY * sumY);
+            let angleRad = Math.atan2(sumY, sumX);
+            let angleDeg = angleRad * (180 / Math.PI);
+            if (angleDeg < 0) angleDeg += 360;
+
+            // Kuadran Determination
+            let kuadran = "Kuadran I";
+            if (sumX < 0 && sumY >= 0) kuadran = "Kuadran II";
+            else if (sumX < 0 && sumY < 0) kuadran = "Kuadran III";
+            else if (sumX >= 0 && sumY < 0) kuadran = "Kuadran IV";
+
+            // Update DOM Table Totals
+            document.getElementById('calc-sum-fx').innerText = sumX.toFixed(2) + ' N';
+            document.getElementById('calc-sum-fy').innerText = sumY.toFixed(2) + ' N';
+
+            // Result Card
+            document.getElementById('multi-calc-result').classList.remove('hidden');
+            document.getElementById('res-sum-x').innerText = sumX.toFixed(2) + ' N';
+            document.getElementById('res-sum-y').innerText = sumY.toFixed(2) + ' N';
+            document.getElementById('res-total-r').innerText = rTotal.toFixed(2) + ' N';
+            document.getElementById('res-total-angle').innerText = angleDeg.toFixed(2) + '°';
+            document.getElementById('res-kuadran-info').innerText = kuadran;
+        }
+
+        // ==========================================
+        // INTERACTIVE QUIZ DATA & LOGIC
+        // ==========================================
+        const quizQuestions = [
+            {
+                id: 1,
+                question: "Dua buah gaya F1 = 6 N dan F2 = 8 N saling tegak lurus (90°). Besar resultan kedua gaya tersebut adalah...",
+                options: ["10 N", "14 N", "2 N", "48 N"],
+                correct: 0,
+                explanation: "Karena tegak lurus (θ = 90°), R = √(F1² + F2²) = √(6² + 8²) = √(36 + 64) = √100 = 10 N."
+            },
+            {
+                id: 2,
+                question: "Manakah di bawah ini yang MERUPAKAN besaran vektor?",
+                options: ["Massa dan Waktu", "Perpindahan dan Kecepatan", "Energi dan Usaha", "Jarak dan Kelajuan"],
+                correct: 1,
+                explanation: "Perpindahan dan kecepatan adalah besaran vektor karena memiliki nilai dan arah."
+            },
+            {
+                id: 3,
+                question: "Dua vektor gayanya masing-masing 10 N membentuk sudut apit 60°. Besar resultan vektornya adalah...",
+                options: ["10 N", "10√2 N", "10√3 N", "20 N"],
+                correct: 2,
+                explanation: "R = √(10² + 10² + 2(10)(10)cos 60°) = √(100 + 100 + 200(0.5)) = √300 = 10√3 N."
+            },
+            {
+                id: 4,
+                question: "Perahu bermesin memiliki kecepatan 8 m/s menyeberangi sungai dengan arus air 6 m/s secara tegak lurus. Berapakah kecepatan total resultan perahu?",
+                options: ["14 m/s", "2 m/s", "10 m/s", "12 m/s"],
+                correct: 2,
+                explanation: "Kecepatan resultan vr = √(vp² + va²) = √(8² + 6²) = √100 = 10 m/s."
+            }
+        ];
+
+        function renderQuiz() {
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = '';
+
+            quizQuestions.forEach((q, qIdx) => {
+                const card = document.createElement('div');
+                card.className = 'bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-3';
+                
+                let optionsHTML = '';
+                q.options.forEach((opt, optIdx) => {
+                    optionsHTML += `
+                        <label class="flex items-center space-x-3 p-3 bg-white hover:bg-blue-50/50 rounded-xl border border-slate-200 cursor-pointer transition">
+                            <input type="radio" name="question-${q.id}" value="${optIdx}" class="text-blue-600 focus:ring-blue-500">
+                            <span class="text-sm text-slate-800">${opt}</span>
+                        </label>
+                    `;
+                });
+
+                card.innerHTML = `
+                    <div class="flex items-start space-x-3">
+                        <span class="w-7 h-7 bg-blue-600 text-white font-bold text-xs rounded-lg flex items-center justify-center shrink-0">
+                            ${qIdx + 1}
+                        </span>
+                        <h3 class="font-semibold text-slate-900 text-sm sm:text-base">${q.question}</h3>
+                    </div>
+                    <div class="space-y-2 pt-2">
+                        ${optionsHTML}
+                    </div>
+                    <div id="quiz-feedback-${q.id}" class="hidden p-3 rounded-xl text-xs space-y-1"></div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function submitQuiz() {
+            let correctCount = 0;
+
+            quizQuestions.forEach(q => {
+                const selected = document.querySelector(`input[name="question-${q.id}"]:checked`);
+                const feedbackBox = document.getElementById(`quiz-feedback-${q.id}`);
+                feedbackBox.classList.remove('hidden');
+
+                if (selected && parseInt(selected.value) === q.correct) {
+                    correctCount++;
+                    feedbackBox.className = 'p-3 rounded-xl text-xs bg-emerald-50 text-emerald-900 border border-emerald-200';
+                    feedbackBox.innerHTML = `<strong>Benar!</strong> ${q.explanation}`;
+                } else {
+                    feedbackBox.className = 'p-3 rounded-xl text-xs bg-rose-50 text-rose-900 border border-rose-200';
+                    feedbackBox.innerHTML = `<strong>Jawaban Kurang Tepat.</strong> ${q.explanation}`;
+                }
+            });
+
+            const totalScore = Math.round((correctCount / quizQuestions.length) * 100);
+            document.getElementById('quiz-score-num').innerText = totalScore;
+            document.getElementById('quiz-score-badge').classList.remove('hidden');
+            showToast(`Kuis Selesai! Skor Anda: ${totalScore}`);
+        }
+
+        function resetQuiz() {
+            document.getElementById('quiz-score-badge').classList.add('hidden');
+            renderQuiz();
+            showToast('Kuis direset.');
+        }
+
+        // ==========================================
+        // INITIALIZATION ON WINDOW LOAD
+        // ==========================================
+        window.onload = function () {
+            updateVectorCanvas();
+            renderVectorTable();
+            renderQuiz();
+
+            // Resize Event Handler
+            window.addEventListener('resize', () => {
+                updateVectorCanvas();
+                if (document.getElementById('sec-perahu').classList.contains('hidden') === false) {
+                    initBoatCanvas();
+                }
+            });
+        };
+    </script>
+</body>
+</html>
